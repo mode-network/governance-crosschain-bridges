@@ -228,3 +228,7 @@ Therefore, the `msg.sender` of the cross-chain transaction on Optimism is the OV
 ## License
 
 [BSD-3-Clause](./LICENSE.md)
+
+
+ModeSepolia deployment:
+deploying "ModeGov" (tx: 0x1e6581b145dcf0b6c6eff1c28b38f7ef5e1b94dfdfea0582dacb5bd59107dcbc)...: deployed at 0x442a6Bea15718588391C5d1dE261AB2c617eA703 with 2181282 gas

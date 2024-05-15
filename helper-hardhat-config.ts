@@ -2,6 +2,7 @@ import {
   eArbitrumNetwork,
   eEthereumNetwork,
   eOptimismNetwork,
+  eModeNetwork,
   ePolygonNetwork,
   eXDaiNetwork,
   iParamsPerNetwork,
@@ -13,7 +14,7 @@ const TENDERLY_FORK = process.env.TENDERLY_FORK || '';
 
 export const NETWORKS_RPC_URL: iParamsPerNetwork<string> = {
     [eEthereumNetwork.sepolia]: ALCHEMY_KEY
-    ? `https://eth-sepolia.alchemyapi.io/v2/${ALCHEMY_KEY}`
+    ? `https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_KEY}`
     : `https://sepolia.infura.io/v3/${INFURA_KEY}`,
   [eEthereumNetwork.goerli]: ALCHEMY_KEY
     ? `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_KEY}`
@@ -31,4 +32,6 @@ export const NETWORKS_RPC_URL: iParamsPerNetwork<string> = {
   [eArbitrumNetwork.arbitrumTestnet]: `https://sepolia-rollup.arbitrum.io/rpc`,
   [eOptimismNetwork.main]: `https://opt-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
   [eOptimismNetwork.testnet]: "https://sepolia.optimism.io",
+  [eModeNetwork.main]: `https://mainnet.mode.network`,
+  [eModeNetwork.testnet]: "https://sepolia.mode.network",
 };

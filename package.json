@@ -27,10 +27,13 @@
     "hardhat:matic": "hardhat --network matic",
     "hardhat:optimism": "hardhat --network optimism",
     "hardhat:optimism-testnet": "hardhat --network optimisticSepolia",
+    "hardhat:mode": "hardhat --network mode",
+    "hardhat:mode-testnet": "hardhat --network modeSepolia",
     "hardhat:arbitrum": "hardhat --network arbitrum",
     "hardhat:arbitrum-testnet": "hardhat --network arbitrum-testnet",
     "deploy:gov-bridge:optimism-testnet": "npm run hardhat:optimism-testnet -- --tags 'OptimisticGov,Greeter'",
     "deploy:gov-bridge:arbitrum-testnet": "npm run hardhat:arbitrum-testnet -- --tags 'ArbitrumGov,Greeter'",
+    "deploy:mode:testnet": "hardhat --network modeSepolia deploy --tags 'ModeGov'",
     "deploy:optimism:testnet": "hardhat --network optimisticSepolia deploy --tags 'OptimisticGov'",
     "deploy:optimism:mainnet": "hardhat --network optimism deploy --tags 'OptimisticGov'",
     "deploy:arbitrum:testnet": "hardhat --network arbitrum-testnet deploy --tags 'ArbitrumGov'",
@@ -99,5 +102,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/aave/governance-crosschain-bridges"
+  },
+  "dependencies": {
+    "@poanet/solidity-flattener": "^3.0.9"
   }
 }

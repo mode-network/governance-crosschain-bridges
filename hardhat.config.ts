@@ -7,7 +7,6 @@ import '@typechain/ethers-v5';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-waffle';
 import '@nomiclabs/hardhat-etherscan';
-import '@tenderly/hardhat-tenderly';
 import 'hardhat-deploy';
 import 'hardhat-gas-reporter';
 import 'hardhat-dependency-compiler';
@@ -22,6 +21,7 @@ import {
   eEthereumNetwork,
   eNetwork,
   eOptimismNetwork,
+  eModeNetwork,
   ePolygonNetwork,
   eXDaiNetwork,
 } from './helpers/types';
@@ -46,8 +46,6 @@ const MAINNET_FORK = process.env.MAINNET_FORK === 'true';
 const FORKING_BLOCK_NUMBER = process.env.FORKING_BLOCK_NUMBER;
 const ARBISCAN_KEY = process.env.ARBISCAN_KEY || '';
 const OPTIMISTIC_ETHERSCAN_KEY = process.env.OPTIMISTIC_ETHERSCAN_KEY || '';
-const TENDERLY_PROJECT = process.env.TENDERLY_PROJECT || '';
-const TENDERLY_USERNAME = process.env.TENDERLY_USERNAME || '';
 
 const getCommonNetworkConfig = (networkName: eNetwork, chainId: number) => {
   // For deployment, load the deployer account from the PRIVATE_KEY env variable
@@ -112,6 +110,7 @@ const hardhatConfig: HardhatUserConfig = {
       optimisticEthereum: OPTIMISTIC_ETHERSCAN_KEY,
       arbitrumOne: ARBISCAN_KEY,
       optimisticSepolia: OPTIMISTIC_ETHERSCAN_KEY,
+      modeSepolia: OPTIMISTIC_ETHERSCAN_KEY,
     },
     customChains: [
       {
@@ -130,12 +129,15 @@ const hardhatConfig: HardhatUserConfig = {
           browserURL: 'https://sepolia-optimism.etherscan.io',
         },
       },
+      {
+        network: 'modeSepolia',
+        chainId: 919,
+        urls: {
+          apiURL: 'https://sepolia.explorer.mode.network/api',
+          browserURL: 'https://sepolia.explorer.mode.network',
+        },
+      },
     ],
-  },
-  tenderly: {
-    project: TENDERLY_PROJECT,
-    username: TENDERLY_USERNAME,
-    forkNetwork: '137',
   },
   mocha: {
     timeout: 100000,
@@ -146,6 +148,7 @@ const hardhatConfig: HardhatUserConfig = {
       companionNetworks: {
         optimism: eOptimismNetwork.testnet,
         arbitrum: eArbitrumNetwork.arbitrumTestnet,
+        mode: eModeNetwork.testnet,
       },
     },
     goerli: getCommonNetworkConfig(eEthereumNetwork.goerli, 5),
@@ -154,9 +157,9 @@ const hardhatConfig: HardhatUserConfig = {
       companionNetworks: {
         optimism: eOptimismNetwork.main,
         arbitrum: eArbitrumNetwork.arbitrum,
+        mode: eModeNetwork.main
       },
     },
-    tenderlyMain: getCommonNetworkConfig(eEthereumNetwork.tenderlyMain, 5),
     matic: getCommonNetworkConfig(ePolygonNetwork.matic, 137),
     mumbai: getCommonNetworkConfig(ePolygonNetwork.mumbai, 80001),
     xdai: getCommonNetworkConfig(eXDaiNetwork.xdai, 100),
@@ -174,6 +177,14 @@ const hardhatConfig: HardhatUserConfig = {
         l1: 'sepolia',
       },
     },
+    [eModeNetwork.main]: getCommonNetworkConfig(eOptimismNetwork.main, 34443),
+    [eModeNetwork.testnet]: {
+      ...getCommonNetworkConfig(eModeNetwork.testnet, 919),
+      companionNetworks: {
+        l1: 'sepolia',
+      },
+    },
+
     hardhat: {
       accounts: accounts.map(({ secretKey, balance }: { secretKey: string; balance: string }) => ({
         privateKey: secretKey,

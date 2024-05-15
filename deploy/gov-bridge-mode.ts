@@ -14,7 +14,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (optimisticGov) {
     log(`Reusing optimistic governance at: ${optimisticGov.address}`);
   } else {
-    await deploy('ModeGov', {
+    await deploy('OptimisticGov', {
       args: [
         ADDRESSES['OVM_L2_MESSENGER'],
         ADDRESSES['ETHEREUM_GOV_EXECUTOR_SEPOLIA'],
@@ -33,4 +33,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 func.dependencies = [];
-func.tags = ['ModeGov'];
+func.tags = ['OptimisticGov'];

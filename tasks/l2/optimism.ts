@@ -4,7 +4,7 @@ import { task } from 'hardhat/config';
 import { ADDRESSES, CONSTANTS } from '../../helpers/gov-constants';
 
 import { DRE } from '../../helpers/misc-utils';
-import { eEthereumNetwork, eOptimismNetwork } from '../../helpers/types';
+import { eEthereumNetwork, eOptimismNetwork, eModeNetwork } from '../../helpers/types';
 import {
   Greeter__factory,
   ICrossDomainMessenger__factory,
@@ -38,11 +38,11 @@ task(
   );
 
   // Note, the contract is on the optimism network, but only used to encode so no issue
-  const optimisticGov = OptimismBridgeExecutor__factory.connect(
-    (await l2.deployments.get('OptimisticGov')).address,
+  const modeGov = OptimismBridgeExecutor__factory.connect(
+    (await l2.deployments.get('ModeGov')).address,
     deployer
   );
-  console.log(`Optimistic Gov at ${optimisticGov.address}`);
+  console.log(`Optimistic Gov at ${modeGov.address}`);
 
   // Note, the contract is on the optimism network, but only used to encode so no issue
   const greeter = Greeter__factory.connect((await l2.deployments.get('Greeter')).address, deployer);
@@ -59,7 +59,7 @@ task(
   const calldatas: string[] = [encodedGreeting];
   const withDelegatecalls: boolean[] = [false];
 
-  const encodedQueue = optimisticGov.interface.encodeFunctionData('queue', [
+  const encodedQueue = modeGov.interface.encodeFunctionData('queue', [
     targets,
     values,
     signatures,
@@ -67,7 +67,7 @@ task(
     withDelegatecalls,
   ]);
 
-  const tx = await messenger.sendMessage(optimisticGov.address, encodedQueue, GAS_LIMIT);
+  const tx = await messenger.sendMessage(modeGov.address, encodedQueue, GAS_LIMIT);
   console.log(`Transaction initiated: ${tx.hash}`);
 });
 
@@ -76,7 +76,7 @@ task('optimism:execute-greeting', '')
   .setAction(async (taskArg, hre) => {
     await hre.run('set-DRE');
 
-    if (DRE.network.name != eOptimismNetwork.main && DRE.network.name != eOptimismNetwork.testnet) {
+    if (DRE.network.name != eModeNetwork.main && DRE.network.name != eModeNetwork.testnet) {
       throw new Error('Only applicable on optimism L2');
     }
 
@@ -90,7 +90,7 @@ task('optimism:execute-greeting', '')
 
     // Note, the contract is on the optimism network, but only used to encode so no issue
     const optimisticGov = OptimismBridgeExecutor__factory.connect(
-      (await DRE.deployments.get('OptimisticGov')).address,
+      (await DRE.deployments.get('ModeGov')).address,
       deployer
     );
     console.log(`Optimistic Gov at ${optimisticGov.address}`);
